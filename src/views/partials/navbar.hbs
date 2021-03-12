@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 10vh;">
+  <div class="container">
+    <a class="navbar-brand" href="#">FarmaApp</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" id="home" aria-current="page" href="/home">Inicio</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/medicos" id="medicos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Medicos
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/medicos/registro">Registro</a></li>
+            <li><a class="dropdown-item" href="/medicos">Consulta</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/pacientes" id="pacientes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Pacientes
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/pacientes/registro">Registro</a></li>
+            <li><a class="dropdown-item" href="/pacientes">Consulta</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/farmacias" id="farmacias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Farmacias
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/farmacias/registro">Registro</a></li>
+            <li><a class="dropdown-item" href="/farmacias">Consulta</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/medicamentos" id="medicamentos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Medicamentos
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/medicamentos/registro">Registro</a></li>
+            <li><a class="dropdown-item" href="/medicamentos">Consulta</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/recipes" id="recipes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Recipes
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/recipes/registro">Registro</a></li>
+            <li><a class="dropdown-item" href="/recipes">Consulta</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  let view = window.location.pathname;
+
+  switch(view) {
+    case '/home': document.getElementById('home').classList.add('active'); break;
+    case '/medicos': document.getElementById('medicos').classList.add('active'); break;
+    case '/medicos/registro': document.getElementById('medicos').classList.add('active'); break;
+    case '/pacientes': document.getElementById('pacientes').classList.add('active'); break;
+    case '/pacientes/registro': document.getElementById('pacientes').classList.add('active'); break;
+    case '/farmacias': document.getElementById('farmacias').classList.add('active'); break;
+    case '/farmacias/registro': document.getElementById('farmacias').classList.add('active'); break;
+    case '/medicamentos': document.getElementById('medicamentos').classList.add('active'); break;
+    case '/medicamentos/registro': document.getElementById('medicamentos').classList.add('active'); break;
+    case '/recipes': document.getElementById('recipes').classList.add('active'); break;
+    case '/recipes/registro': document.getElementById('recipes').classList.add('active'); break;
+  }
+</script>

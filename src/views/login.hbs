@@ -1,0 +1,73 @@
+<div class="container p-5">
+    <div class="card">
+        <h3 class="card-header text-center text-uppercase" style="letter-spacing: 1rem;">
+            Inicio de sesion
+        </h3>
+        <div class="card-body">
+
+            <form method="POST" id="form-log">
+                <div class="row p-5">
+                    <div class="col-md-12">
+                        <label for="cedula" class="form-label text-uppercase">Correo</label>
+                        <input type="text" class="form-control" id="correo" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="col-md-12 mt-4">
+                        <label class="form-label text-uppercase">Clave</label>
+                        <input type="password" class="form-control" id="clave" placeholder="Clave de acceso" required>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-success mt-4 mb-4" id="btnsubmit" type="submit">Ingresar</button>
+                </div>
+                <div class="text-center">
+                    <a class="text-secondary" href="/registro">¿No estás registrado?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let formLog = document.getElementById('form-log');
+
+        formLog.addEventListener('submit', e => {
+            e.preventDefault();
+
+            let body = {
+                correo: document.getElementById('correo').value,
+                clave: document.getElementById('clave').value,
+            }
+
+            btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
+
+            let res = post(body, '/login')
+                .then(res => {
+                    btnEnable(document.getElementById('btnsubmit'), 'Ingresar')
+
+                    if (res.ok === false) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: res.msg,
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    if (!res.ok) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: "¡No se pudo conectar con el servidor!",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    window.location.href = url + '/home';
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        });
+    </script>

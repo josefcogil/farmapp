@@ -1,0 +1,50 @@
+{{> navbar}}
+
+<div class="container p-5">
+    <div class="card">
+        <h4 class="card-header text-center text-uppercase" style="letter-spacing: 1rem;">
+            Informacion
+        </h4>
+        <div class="card-body p-5">
+            <h5 class="text-center text-uppercase text-secondary">Medicamento</h5>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Medicamento</th>
+                        <th scope="col">Presentacion</th>
+                        <th scope="col">mg</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each medicamentos}}
+                    <tr onclick="verInfo({{this.id}})">
+                        <th class="text-uppercase">{{this.nombre}}</th>
+                        <td class="text-uppercase">{{this.farmaco}}</td>
+                        <td class="text-uppercase">{{this.presentacion}}</td>
+                        <td>{{this.mg}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+            <h5 class="text-center text-uppercase text-secondary mt-5">Farmacias</h5>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Direccion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each farmacias}}
+                    <tr>
+                        <th class="text-uppercase">{{this.nombre}}</th>
+                        <td class="text-uppercase">{{this.direccion}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

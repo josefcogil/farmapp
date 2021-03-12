@@ -1,0 +1,26 @@
+{{>navbar}}
+
+<div style="height: 90vh;" class="container p-5">
+    <h3 class="text-center text-uppercase mb-4">Pacientes</h3>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Cédula</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Teléfono</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each pacientes}}
+            <tr>
+                <th class="text-uppercase">{{this.cedula}}</th>
+                <td class="text-uppercase">{{this.nombre}}</td>
+                <td class="text-uppercase">{{this.direccion}}</td>
+                <td class="text-uppercase">{{this.telefono}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

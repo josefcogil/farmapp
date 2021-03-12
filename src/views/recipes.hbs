@@ -1,0 +1,192 @@
+{{> navbar}}
+
+<div class="container p-5">
+    <div class="card">
+        <h3 class="card-header text-center text-uppercase" style="letter-spacing: 1rem;">
+            Generar Recipe
+        </h3>
+        <div class="card-body">
+
+            <form method="POST" id="form-reg">
+                <div class="row p-5">
+                    <div class="col-md-6">
+                        <label class="form-label text-uppercase">Paciente</label>
+                        <select name="" id="paciente" class="form-control text-uppercase">
+                            <option value="">Seleccione un paciente...</option>
+                            {{#each pacientes}}
+                            <option value="{{this.cedula}}">{{this.cedula}} -- {{this.nombre}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-uppercase">Médico</label>
+                        <select name="" id="medico" class="form-control text-uppercase">
+                            <option value="">Seleccione un médico...</option>
+                            {{#each medicos}}
+                            <option value="{{this.id}}">{{this.nombre}} -- {{this.especialidad}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <label class="form-label text-uppercase">Patologia</label>
+                        <select name="" class="form-control text-uppercase"
+                            onchange="render(this.value, 'container1')">
+                            <option value="">Seleccione una patologia...</option>
+                            {{#each patologias}}
+                            <option value="{{this.id}}">{{this.patologia}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-success mb-5" id="btnsubmit" type="submit">Registrar</button>
+                </div>
+            </form>
+
+            <div class="container px-5">
+                <h5 class="text-center text-secondary text-uppercase mb-4">Listado</h5>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Medicamento</th>
+                            <th scope="col">Presentacion</th>
+                            <th scope="col">mg</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="container1">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let formReg = document.getElementById('form-reg');
+
+    let med_recipe = [];
+
+    const consultarPorPatologia = async id => {
+
+        let resultado = await fetch(`http://localhost:4000/medicamentos/patologia/${id}`)
+        let datos = await resultado.json();
+
+        let medicamentos = datos.medicamentos
+
+        return medicamentos;
+    }
+
+    const render = async (id, idContainer) => {
+        let medicamentos = await consultarPorPatologia(id);
+
+        let container = document.getElementById(idContainer);
+        let html = '';
+
+        container.innerHTML = html;
+
+        medicamentos.forEach(item => {
+            html += `<tr>`
+            html += `<th class="text-uppercase">${item.nombre}</th>`;
+            html += `<td class="text-uppercase">${item.farmaco}</td>`;
+            html += `<td class="text-uppercase">${item.presentacion}</td>`;
+            html += `<td>${item.mg}</td>`;
+            html += `<td class="text-success" onclick="agregar(${item.id})"><button class="btn btn-success btn-sm">+</button></td>`;
+            html += `</tr>`
+        })
+
+        container1.innerHTML += html;
+    }
+
+    const agregar = id => {
+        med_recipe.push(id)
+
+        swal({
+            title: "¡Hecho!",
+            text: "Medicamento Agregado",
+            icon: "success"
+        })
+    };
+
+    formReg.addEventListener('submit', e => {
+        e.preventDefault();
+
+        if (document.getElementById('paciente').value == "") {
+            swal({
+                title: "¡Aviso!",
+                text: "Seleccione un paciente",
+                icon: "warning"
+            })
+
+            return;
+        }
+
+        if (document.getElementById('medico').value == "") {
+            swal({
+                title: "¡Aviso!",
+                text: "Seleccione un medico",
+                icon: "warning"
+            })
+
+            return;
+        }
+
+        if (med_recipe.length == 0) {
+            swal({
+                title: "¡Aviso!",
+                text: "Agregue al menos un medicamento",
+                icon: "warning"
+            })
+
+            return;
+        }
+
+        let body = {
+            paciente: document.getElementById('paciente').value,
+            medico: document.getElementById('medico').value,
+            medicamentos: med_recipe
+        }
+
+        console.log(body)
+
+        btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
+
+        let res = post(body, '/recipes')
+            .then(res => {
+                btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+
+                if (res.ok === false) {
+                    console.log(res)
+                    swal({
+                        title: "¡Error!",
+                        text: res.msg,
+                        icon: "error"
+                    });
+                    return;
+                }
+
+                if (!res.ok) {
+                    console.log(res)
+                    swal({
+                        title: "¡Error!",
+                        text: "¡No se pudo conectar con el servidor!",
+                        icon: "error"
+                    });
+                    return;
+                }
+
+                swal({
+                    title: "¡Hecho!",
+                    text: res.msg,
+                    icon: "success"
+                })
+                    .then(() => window.location.href = url + '/recipes');
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    });
+</script>

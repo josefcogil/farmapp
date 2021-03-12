@@ -1,0 +1,79 @@
+{{> navbar}}
+
+<div class="mt-5">
+    <div class="container">
+        <div class="card">
+            <h3 class="card-header text-center text-uppercase" style="letter-spacing: 1rem;">
+                Registrar Farmacia
+            </h3>
+            <div class="card-body">
+
+                <form method="POST" id="form-reg">
+                    <div class="row p-5">
+                        <div class="col-md-6">
+                            <label for="cedula" class="form-label text-uppercase">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Nombre de la farmacia" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label text-uppercase">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" placeholder="Dirección" required>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-success mt-4" id="btnsubmit" type="submit">Registrar</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let formReg = document.getElementById('form-reg');
+
+    formReg.addEventListener('submit', e => {
+        e.preventDefault();
+
+        let body = {
+            nombre: document.getElementById('nombre').value,
+            direccion: document.getElementById('direccion').value
+        }
+
+        btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
+
+        let res = post(body, '/farmacias')
+            .then(res => {
+                btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+
+                if (res.ok === false) {
+                    console.log(res)
+                    swal({
+                        title: "¡Error!",
+                        text: res.msg,
+                        icon: "error"
+                    });
+                    return;
+                }
+
+                if (!res.ok) {
+                    console.log(res)
+                    swal({
+                        title: "¡Error!",
+                        text: "¡No se pudo conectar con el servidor!",
+                        icon: "error"
+                    });
+                    return;
+                }
+
+                swal({
+                    title: "¡Hecho!",
+                    text: res.msg,
+                    icon: "success"
+                })
+                    .then(() => window.location.href = url + '/farmacias/registro');
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    });
+</script>

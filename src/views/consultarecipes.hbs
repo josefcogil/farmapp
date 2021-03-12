@@ -1,0 +1,30 @@
+{{>navbar}}
+
+<div style="height: 90vh;" class="container p-5">
+    <h3 class="text-center text-uppercase mb-4">Recipes</h3>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">CI. Paciente</th>
+                <th scope="col">Paciente</th>
+                <th scope="col">Medico</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each recipes}}
+            <tr onclick="verInfo({{this.id}})">
+                <td class="text-uppercase">{{this.id}}</td>
+                <td class="text-uppercase">{{this.cedula}}</td>
+                <td class="text-uppercase">{{this.paciente}}</td>
+                <td class="text-uppercase">{{this.medico}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const verInfo = id => window.location.href = url + '/recipes/ver/' + id
+</script>

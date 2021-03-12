@@ -1,0 +1,34 @@
+{{>navbar}}
+
+<div style="height: 90vh;" class="container p-5">
+    <h3 class="text-center text-uppercase mb-4">Agregados Recientemente</h3>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Medicamento</th>
+                <th scope="col">Presentacion</th>
+                <th scope="col">mg</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each medicamentos}}
+            <tr onclick="verInfo({{this.id}})">
+                <th class="text-uppercase">{{this.nombre}}</th>
+                <td class="text-uppercase">{{this.farmaco}}</td>
+                <td class="text-uppercase">{{this.presentacion}}</td>
+                <td>{{this.mg}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="container text-center mt-5">
+        <a href="/documento.pdf"><button class="btn btn-success">Descargar PDF de Vademecum</button></a>
+    </div>
+</div>
+
+<script>
+    const verInfo = id => window.location.href = url + '/medicamentos/ver/' + id
+</script>
