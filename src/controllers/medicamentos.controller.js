@@ -83,5 +83,13 @@ module.exports = {
         } else {
             res.json({ ok: false, msg: 'Error al registrar' })
         }
+    },
+
+    buscarMedicamento: async (req, res) => {
+        let medicamentos = await query('farmacos')
+        .select('*')
+        .where('farmaco', 'LIKE', `%${req.params.busqueda}%`)
+
+        res.json({ ok: true, medicamentos });
     }
 }

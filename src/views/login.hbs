@@ -1,3 +1,48 @@
+<style>
+    .loader {
+        position: absolute;
+        z-index: 10000;
+        height: 100%;
+        width: 100%;
+        background: white;
+    }
+
+    .animate {
+        animation: FadeOut .4s;
+    }
+
+    .remove {
+        opacity: 0;
+        z-index: 0;
+    }
+
+    .img-loader {
+        background: url("/img/farma.jpg");
+        height: 80%;
+        width: 50%;
+        background-size: cover;
+        margin: auto;
+    }
+
+    @keyframes FadeOut {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+    
+</style>
+
+<div class="loader" id="loader">
+    <h1 class="text-center mt-4 text-primary">Bienvenido a FarmaApp</h1>
+    <div class="img-loader">
+
+    </div>
+</div>
+
 <div class="container p-5">
     <div class="card">
         <h3 class="card-header text-center text-uppercase" style="letter-spacing: 1rem;">
@@ -28,6 +73,19 @@
     </div>
 
     <script>
+        const remove = () => {
+            document.getElementById("loader").className += " animate"
+        }
+
+        setTimeout(() => {
+            remove()
+
+            setTimeout(() => {
+                document.getElementById("loader").className += " remove"
+            }, 400)
+        }, 3000)
+
+
         let formLog = document.getElementById('form-log');
 
         formLog.addEventListener('submit', e => {

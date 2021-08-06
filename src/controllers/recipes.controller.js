@@ -34,7 +34,7 @@ module.exports = {
     },
 
     consultarTodo: async (req, res) => {
-        let pacientes = await query('clientes').select('*');
+        let pacientes = await query('clientes').select('*').where('cedula', '>', '0');
         let medicos = await query('medicos').select('*');
         let patologias = await query('patologias').select('*');
 
@@ -81,5 +81,9 @@ module.exports = {
             medicamentos,
             recipes
         })
+    },
+
+    eliminarRecipe: async (req, res) => {
+        await query('recipes').where('id', '=', req.params.id).del()
     }
 }

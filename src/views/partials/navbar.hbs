@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 10vh;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 10vh;">
   <div class="container">
     <a class="navbar-brand" href="#">FarmaApp</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,7 +11,7 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" id="registro" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Registro
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -23,7 +23,7 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" id="consulta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Consulta
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -36,7 +36,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" id="home" aria-current="page" href="/recipes/registro">Generar Recipe</a>
+          <a class="nav-link" id="recipe" aria-current="page" href="/recipes/registro">Generar Recipe</a>
         </li>
 
         {{!-- <li class="nav-item dropdown">
@@ -91,7 +91,7 @@
         </li>
       </ul>
     </div>
-    <a href="/"><button class="btn btn-outline-danger" >Salir</button></a>
+    <a href="/"><button class="btn btn-danger" >Salir</button></a>
   </div>
 </nav>
 
@@ -100,15 +100,15 @@
 
   switch(view) {
     case '/home': document.getElementById('home').classList.add('active'); break;
-    case '/medicos': document.getElementById('medicos').classList.add('active'); break;
-    case '/medicos/registro': document.getElementById('medicos').classList.add('active'); break;
-    case '/pacientes': document.getElementById('pacientes').classList.add('active'); break;
-    case '/pacientes/registro': document.getElementById('pacientes').classList.add('active'); break;
-    case '/farmacias': document.getElementById('farmacias').classList.add('active'); break;
-    case '/farmacias/registro': document.getElementById('farmacias').classList.add('active'); break;
-    case '/medicamentos': document.getElementById('medicamentos').classList.add('active'); break;
-    case '/medicamentos/registro': document.getElementById('medicamentos').classList.add('active'); break;
-    case '/recipes': document.getElementById('recipes').classList.add('active'); break;
-    case '/recipes/registro': document.getElementById('recipes').classList.add('active'); break;
+    case '/medicos': document.getElementById('consulta').classList.add('active'); break;
+    case '/medicos/registro': document.getElementById('registro').classList.add('active'); break;
+    case '/pacientes': document.getElementById('consulta').classList.add('active'); break;
+    case '/pacientes/registro': document.getElementById('registro').classList.add('active'); break;
+    case '/farmacias': document.getElementById('consulta').classList.add('active'); break;
+    case '/farmacias/registro': document.getElementById('registro').classList.add('active'); break;
+    case '/medicamentos': document.getElementById('consulta').classList.add('active'); break;
+    case '/medicamentos/registro': document.getElementById('registro').classList.add('active'); break;
+    case '/recipes': document.getElementById('consulta').classList.add('active'); break;
+    case '/recipes/registro': document.getElementById('recipe').classList.add('active'); break;
   }
 </script>

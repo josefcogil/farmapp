@@ -5,7 +5,9 @@ const controller = require('../controllers/medicamentos.controller');
 
 router.get('/', controller.consultarMedicamentos);
 
-router.get('/patologia/:id', controller.consultarPorPatologia)
+router.get('/busqueda/:busqueda', controller.buscarMedicamento);
+
+router.get('/patologia/:id', controller.consultarPorPatologia);
 
 router.get('/registro', controller.consultarFarmacias);
 

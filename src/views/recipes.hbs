@@ -41,6 +41,20 @@
 
                 <div class="text-center">
                     <button class="btn btn-success mb-5" id="btnsubmit" type="submit">Registrar</button>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <input oninput="searchRender(this.value, 'container1')" class="form-control mb-2" type="text" name="" id="" placeholder="Buscar medicamento">
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                           <h5 class="text-danger" id="alerta"></h5>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
                 </div>
             </form>
 
@@ -80,6 +94,16 @@
         return medicamentos;
     }
 
+    const buscarPorNombre = async busqueda => {
+
+        let resultado = await fetch(`http://localhost:4000/medicamentos/busqueda/${busqueda}`)
+        let datos = await resultado.json();
+
+        let medicamentos = datos.medicamentos
+
+        return medicamentos;
+    }
+
     const render = async (id, idContainer) => {
         let medicamentos = await consultarPorPatologia(id);
 
@@ -101,6 +125,35 @@
         container1.innerHTML += html;
     }
 
+    const searchRender = async (busqueda, idContainer) => {
+        console.log(busqueda)
+        
+        let medicamentos = await buscarPorNombre(busqueda);
+
+        let container = document.getElementById(idContainer);
+        let html = '';
+
+        container.innerHTML = html;
+
+        if(medicamentos.length == 0) {
+            document.getElementById('alerta').innerHTML = 'No se encontraron resultados'
+        } else {
+            document.getElementById('alerta').innerHTML = ' '
+            
+            medicamentos.forEach(item => {
+            html += `<tr>`
+            html += `<th class="text-uppercase">${item.nombre}</th>`;
+            html += `<td class="text-uppercase">${item.farmaco}</td>`;
+            html += `<td class="text-uppercase">${item.presentacion}</td>`;
+            html += `<td>${item.mg}</td>`;
+            html += `<td class="text-success" onclick="agregar(${item.id})"><button class="btn btn-success btn-sm">+</button></td>`;
+            html += `</tr>`
+        })
+        }
+
+        container1.innerHTML += html;
+    }
+
     const agregar = id => {
         med_recipe.push(id)
 
@@ -113,16 +166,6 @@
 
     formReg.addEventListener('submit', e => {
         e.preventDefault();
-
-        if (document.getElementById('paciente').value == "") {
-            swal({
-                title: "¡Aviso!",
-                text: "Seleccione un paciente",
-                icon: "warning"
-            })
-
-            return;
-        }
 
         if (document.getElementById('medico').value == "") {
             swal({
@@ -144,8 +187,16 @@
             return;
         }
 
+        let paciente
+
+        if (document.getElementById('paciente').value == '') {
+            paciente = "0"
+        } else {
+            paciente = document.getElementById('paciente').value
+        }
+
         let body = {
-            paciente: document.getElementById('paciente').value,
+            paciente,
             medico: document.getElementById('medico').value,
             medicamentos: med_recipe
         }

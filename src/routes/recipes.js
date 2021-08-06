@@ -11,4 +11,6 @@ router.post('/', controller.registrarRecipe);
 
 router.get('/ver/:id', controller.verPorId);
 
+router.delete('/:id', controller.eliminarRecipe)
+
 module.exports = router;
