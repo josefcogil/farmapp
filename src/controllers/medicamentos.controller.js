@@ -34,7 +34,7 @@ module.exports = {
             .select('*')
             .where('id_patologia', '=', req.params.id)
             .innerJoin('farmacos', 'farmacos.id', '=', 'farmaco_patologia.id_farmaco')
-            
+
         res.json({ ok: true, medicamentos });
     },
 
@@ -48,9 +48,15 @@ module.exports = {
             .where('id_farmaco', '=', req.params.id)
             .innerJoin('farmacias', 'farmacias.id', '=', 'farmaco_farmacia.id_farmacia')
 
+        let genericos = await query('farmacos')
+            .select('*')
+            .where('farmaco', '=', medicamentos[0].farmaco)
+            .andWhere('id', '!=', medicamentos[0].id)
+
         res.render('verinfo', {
             medicamentos,
-            farmacias
+            farmacias,
+            genericos
         })
     },
 
@@ -87,8 +93,8 @@ module.exports = {
 
     buscarMedicamento: async (req, res) => {
         let medicamentos = await query('farmacos')
-        .select('*')
-        .where('farmaco', 'LIKE', `%${req.params.busqueda}%`)
+            .select('*')
+            .where('farmaco', 'LIKE', `%${req.params.busqueda}%`)
 
         res.json({ ok: true, medicamentos });
     }
