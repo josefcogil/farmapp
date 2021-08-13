@@ -33,7 +33,6 @@
             opacity: 0;
         }
     }
-    
 </style>
 
 <div class="loader" id="loader">
@@ -65,8 +64,9 @@
                 <div class="text-center">
                     <button class="btn btn-success mt-4 mb-4" id="btnsubmit" type="submit">Ingresar</button>
                 </div>
+
                 <div class="text-center">
-                    <a class="text-secondary" href="/registro">¿No estás registrado?</a>
+                    <a class="text-secondary" href="/recipes/consulta/farmacias">Farmacias</a>
                 </div>
             </form>
         </div>
@@ -121,6 +121,10 @@
                         });
                         return;
                     }
+
+                    localStorage.removeItem('rol')
+                    localStorage.setItem('rol', res.rol)
+                    localStorage.setItem('medico', res.id_medico)
 
                     window.location.href = url + '/home';
                 })

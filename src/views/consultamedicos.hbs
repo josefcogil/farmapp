@@ -9,6 +9,8 @@
                 <th scope="col">Cédula</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Especialidad</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -17,8 +19,47 @@
                 <th class="text-uppercase">{{this.cedula}}</th>
                 <td class="text-uppercase">{{this.nombre}}</td>
                 <td class="text-uppercase">{{this.especialidad}}</td>
+                <td class="text-success"><a href="http://localhost:4000/medicos/editar/{{this.id}}"><button
+                            class="btn btn-outline-primary btn-sm" id="btn_editar">Editar</button></a></td>
+                <td class="text-success" onclick="eliminar({{this.id}})"><button
+                        class="btn btn-danger btn-sm">x</button></td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 </div>
+
+<script>
+    let rol = localStorage.getItem('rol')
+
+    if (rol == 2) {
+        document.getElementById('btn_editar').classList += ' disabled'
+    }
+
+    const eliminar = id => {
+        swal({
+            title: "!Aviso!",
+            text: "¿Desea eliminar este medico?",
+            icon: "warning",
+            dangerMode: true,
+            buttons: true
+        }).then(res => {
+            if (res == true) {
+                let resultado = fetch(`http://localhost:4000/medicos/${id}`, {
+                    method: 'DELETE'
+                })
+
+                swal({
+                    title: "¡Hecho!",
+                    text: "Medico eliminado exitosamente",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = url + '/medicos'
+                })
+            } else {
+                return
+            }
+        })
+
+    }
+</script>

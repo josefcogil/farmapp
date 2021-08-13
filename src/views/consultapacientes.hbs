@@ -10,6 +10,8 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Dirección</th>
                 <th scope="col">Teléfono</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -19,8 +21,41 @@
                 <td class="text-uppercase">{{this.nombre}}</td>
                 <td class="text-uppercase">{{this.direccion}}</td>
                 <td class="text-uppercase">{{this.telefono}}</td>
+                <td class="text-success"><a href="http://localhost:4000/pacientes/editar/{{this.id}}"><button
+                            class="btn btn-outline-primary btn-sm">Editar</button></a></td>
+                <td class="text-success" onclick="eliminar({{this.id}})"><button
+                        class="btn btn-danger btn-sm">x</button></td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 </div>
+
+<script>
+    const eliminar = id => {
+        swal({
+            title: "!Aviso!",
+            text: "¿Desea eliminar este paciente?",
+            icon: "warning",
+            dangerMode: true,
+            buttons: true
+        }).then(res => {
+            if (res == true) {
+                let resultado = fetch(`http://localhost:4000/pacientes/${id}`, {
+                    method: 'DELETE'
+                })
+
+                swal({
+                    title: "¡Hecho!",
+                    text: "Paciente eliminado exitosamente",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = url + '/pacientes'
+                })
+            } else {
+                return
+            }
+        })
+
+    }
+</script>

@@ -21,39 +21,45 @@
                     <div class="col-md-6">
                         <label class="form-label text-uppercase">Médico</label>
                         <select name="" id="medico" class="form-control text-uppercase">
-                            <option value="">Seleccione un médico...</option>
-                            {{#each medicos}}
-                            <option value="{{this.id}}">{{this.nombre}} -- {{this.especialidad}}</option>
-                            {{/each}}
+
                         </select>
                     </div>
                     <div class="col-md-6 mt-4">
                         <label class="form-label text-uppercase">Patologia</label>
-                        <select name="" class="form-control text-uppercase"
-                            onchange="render(this.value, 'container1')">
+                        <select name="" class="form-control text-uppercase" onchange="render(this.value, 'container1')">
                             <option value="">Seleccione una patologia...</option>
                             {{#each patologias}}
                             <option value="{{this.id}}">{{this.patologia}}</option>
                             {{/each}}
                         </select>
                     </div>
-                </div>
-
-                <div class="text-center">
-                    <button class="btn btn-success mb-5" id="btnsubmit" type="submit">Registrar</button>
-                    <div class="row">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
-                            <input oninput="searchRender(this.value, 'container1')" class="form-control mb-2" type="text" name="" id="" placeholder="Buscar medicamento">
-                        </div>
-                        <div class="col-md-4"></div>
+                    <div class="col-md-6 mt-4">
+                        <label class="form-label text-uppercase">Buscar por patologia</label>
+                        <input oninput="nameSearchRender(this.value, 'container1')" type="text" name=""
+                            class="form-control">
                     </div>
-                    <div class="row mb-5">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
-                           <h5 class="text-danger" id="alerta"></h5>
+
+                    <div class="text-center mt-5">
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <input oninput="searchRender(this.value, 'container1')" class="form-control mb-2"
+                                    type="text" name="" id="" placeholder="Buscar medicamento">
+                            </div>
+                            <div class="col-md-4"></div>
                         </div>
-                        <div class="col-md-4"></div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <h5 class="text-danger" id="alerta"></h5>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                        <div class="text-center mb-5">
+                            <a href="http://localhost:4000/medicamentos/registro">Registrar medicamento</a>
+                        </div>
+                        <button class="btn btn-success mb-5" id="btnsubmit" type="submit">Guardar recipe</button>
+
                     </div>
                 </div>
             </form>
@@ -82,9 +88,25 @@
 <script>
     let formReg = document.getElementById('form-reg');
 
+    const consultarMedico = async id => {
+
+        let resultado = await fetch(`http://localhost:4000/medicos/consulta/${id}`)
+        let datos = await resultado.json();
+
+        if (!datos.medico) {
+            document.getElementById('medico').innerHTML += `<option value="0">Admin -- Administrador</option>`
+        } else {
+            document.getElementById('medico').innerHTML += `<option value="${datos.medico.id}">${datos.medico.nombre} -- ${datos.medico.especialidad}</option>`
+        }
+
+
+    }
+
+    consultarMedico(localStorage.getItem('medico'))
+
     let med_recipe = [];
 
-    const consultarPorPatologia = async id => {
+    const consultarPorIDPatologia = async id => {
 
         let resultado = await fetch(`http://localhost:4000/medicamentos/patologia/${id}`)
         let datos = await resultado.json();
@@ -104,8 +126,18 @@
         return medicamentos;
     }
 
+    const consultarPorNombrePatologia = async busqueda => {
+
+        let resultado = await fetch(`http://localhost:4000/medicamentos/patologia-nombre/${busqueda}`)
+        let datos = await resultado.json();
+
+        let medicamentos = datos.medicamentos
+
+        return medicamentos;
+    }
+
     const render = async (id, idContainer) => {
-        let medicamentos = await consultarPorPatologia(id);
+        let medicamentos = await consultarPorIDPatologia(id);
 
         let container = document.getElementById(idContainer);
         let html = '';
@@ -127,7 +159,7 @@
 
     const searchRender = async (busqueda, idContainer) => {
         console.log(busqueda)
-        
+
         let medicamentos = await buscarPorNombre(busqueda);
 
         let container = document.getElementById(idContainer);
@@ -135,20 +167,49 @@
 
         container.innerHTML = html;
 
-        if(medicamentos.length == 0) {
+        if (medicamentos.length == 0) {
             document.getElementById('alerta').innerHTML = 'No se encontraron resultados'
         } else {
             document.getElementById('alerta').innerHTML = ' '
-            
+
             medicamentos.forEach(item => {
-            html += `<tr>`
-            html += `<th class="text-uppercase">${item.nombre}</th>`;
-            html += `<td class="text-uppercase">${item.farmaco}</td>`;
-            html += `<td class="text-uppercase">${item.presentacion}</td>`;
-            html += `<td>${item.mg}</td>`;
-            html += `<td class="text-success" onclick="agregar(${item.id})"><button class="btn btn-success btn-sm">+</button></td>`;
-            html += `</tr>`
-        })
+                html += `<tr>`
+                html += `<th class="text-uppercase">${item.nombre}</th>`;
+                html += `<td class="text-uppercase">${item.farmaco}</td>`;
+                html += `<td class="text-uppercase">${item.presentacion}</td>`;
+                html += `<td>${item.mg}</td>`;
+                html += `<td class="text-success" onclick="agregar(${item.id})"><button class="btn btn-success btn-sm">+</button></td>`;
+                html += `</tr>`
+            })
+        }
+
+        container1.innerHTML += html;
+    }
+
+    const nameSearchRender = async (busqueda, idContainer) => {
+        console.log(busqueda)
+
+        let medicamentos = await consultarPorNombrePatologia(busqueda);
+
+        let container = document.getElementById(idContainer);
+        let html = '';
+
+        container.innerHTML = html;
+
+        if (medicamentos.length == 0) {
+            document.getElementById('alerta').innerHTML = 'No se encontraron resultados'
+        } else {
+            document.getElementById('alerta').innerHTML = ' '
+
+            medicamentos.forEach(item => {
+                html += `<tr>`
+                html += `<th class="text-uppercase">${item.nombre}</th>`;
+                html += `<td class="text-uppercase">${item.farmaco}</td>`;
+                html += `<td class="text-uppercase">${item.presentacion}</td>`;
+                html += `<td>${item.mg}</td>`;
+                html += `<td class="text-success" onclick="agregar(${item.id})"><button class="btn btn-success btn-sm">+</button></td>`;
+                html += `</tr>`
+            })
         }
 
         container1.innerHTML += html;
@@ -157,11 +218,15 @@
     const agregar = id => {
         med_recipe.push(id)
 
+        localStorage.setItem('medicamentos', JSON.stringify(med_recipe))
+
         swal({
             title: "¡Hecho!",
             text: "Medicamento Agregado",
             icon: "success"
         })
+
+        return
     };
 
     formReg.addEventListener('submit', e => {
@@ -177,7 +242,7 @@
             return;
         }
 
-        if (med_recipe.length == 0) {
+        if (localStorage.getItem('medicamentos').length == 0) {
             swal({
                 title: "¡Aviso!",
                 text: "Agregue al menos un medicamento",
@@ -198,7 +263,7 @@
         let body = {
             paciente,
             medico: document.getElementById('medico').value,
-            medicamentos: med_recipe
+            medicamentos: JSON.parse(localStorage.getItem('medicamentos'))
         }
 
         console.log(body)
@@ -228,6 +293,8 @@
                     });
                     return;
                 }
+
+                localStorage.removeItem('medicamentos')
 
                 swal({
                     title: "¡Hecho!",

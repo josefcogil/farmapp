@@ -4,37 +4,34 @@
     <div class="container">
         <div class="card">
             <h3 class="card-header text-center text-uppercase" style="letter-spacing: 1rem;">
-                Registrar paciente
+                Editar medico
             </h3>
             <div class="card-body">
-
+                <input value="{{medico.id}}" type="hidden" name="" id="id_medico">
                 <form method="POST" id="form-reg">
                     <div class="row p-5">
                         <div class="col-md-6">
                             <label for="cedula" class="form-label text-uppercase">Cedula <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="cedula" placeholder="Cedula de identidad"
-                                required>
+                            <input value="{{medico.cedula}}" type="text" class="form-control" id="cedula"
+                                placeholder="Cedula de identidad" required>
                         </div>
                         <div class="col-md-6">
                             <label for="nombre" class="form-label text-uppercase">Nombre <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nombre" placeholder="Nombre y apellido"
-                                required>
+                            <input value="{{medico.nombre}}" type="text" class="form-control" id="nombre"
+                                placeholder="Nombre y apellido" required>
                         </div>
                         <div class="col-md-6 mt-4">
-                            <label for="direccion" class="form-label text-uppercase">Direccion <span
+                            <label for="especialidad" class="form-label text-uppercase">Especialidad <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="direccion" placeholder="Direccion" required>
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <label for="telefono" class="form-label text-uppercase">Telefono</label>
-                            <input type="text" class="form-control" id="telefono" placeholder="Numero de telefono">
+                            <input value="{{medico.especialidad}}" type="text" class="form-control" id="especialidad"
+                                placeholder="Especialidad" required>
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <button class="btn btn-success mt-4" id="btnsubmit" type="submit">Registrar</button>
+                        <button class="btn btn-success mt-4" id="btnsubmit" type="submit">Guardar cambios</button>
                     </div>
                 </form>
             </div>
@@ -42,6 +39,16 @@
     </div>
 
     <script>
+        if (rol == 2) {
+            swal({
+                title: "!Aviso!",
+                text: "Se necesitan privilegios de administrador",
+                icon: "warning",
+                dangerMode: true,
+                buttons: true
+            }).then(() => window.history.go(-1))
+        }
+
         let formReg = document.getElementById('form-reg');
 
         formReg.addEventListener('submit', e => {
@@ -50,15 +57,16 @@
             let body = {
                 cedula: document.getElementById('cedula').value,
                 nombre: document.getElementById('nombre').value,
-                direccion: document.getElementById('direccion').value,
-                telefono: document.getElementById('telefono').value
+                especialidad: document.getElementById('especialidad').value,
             }
 
             btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
 
-            let res = post(body, '/pacientes')
+            let id_medico = parseInt(document.getElementById('id_medico').value)
+
+            let res = put(body, `/medicos/${id_medico}`)
                 .then(res => {
-                    btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+                    btnEnable(document.getElementById('btnsubmit'), 'Guardar cambios')
 
                     if (res.ok === false) {
                         console.log(res)
@@ -80,12 +88,12 @@
                         return;
                     }
 
+
                     swal({
                         title: "¡Hecho!",
                         text: res.msg,
                         icon: "success"
-                    })
-                        .then(() => window.location.href = url + '/pacientes/registro');
+                    }).then(() => window.location.href = url + '/medicos');
                 })
                 .catch(err => {
                     console.error(err)

@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
-const exphbs  = require('express-handlebars');
+const exphbs = require('express-handlebars');
 
 const PORT = process.env.PORT || 4000;
 
@@ -10,7 +10,7 @@ app.use(cors());
 
 // Body Parser
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'))
 
 // Set template engine
-app.engine('.hbs', exphbs({extname: '.hbs', layout: 'main.hbs'}));
+app.engine('.hbs', exphbs({ extname: '.hbs', layout: 'main.hbs' }));
 app.set('view engine', '.hbs');
 
 // Serve Home page

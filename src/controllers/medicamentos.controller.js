@@ -38,6 +38,16 @@ module.exports = {
         res.json({ ok: true, medicamentos });
     },
 
+    consultarPorNombrePatologia: async (req, res) => {
+        let medicamentos = await query('patologias')
+            .select('*')
+            .where('patologia', 'LIKE', `%${req.params.busqueda}%`)
+            .innerJoin('farmaco_patologia', 'farmaco_patologia.id_patologia', '=', 'patologias.id')
+            .innerJoin('farmacos', 'farmacos.id', '=', 'farmaco_patologia.id_farmaco')
+
+        res.json({ ok: true, medicamentos });
+    },
+
     verPorId: async (req, res) => {
         let medicamentos = await query('farmacos')
             .select('*')
@@ -54,6 +64,28 @@ module.exports = {
             .andWhere('id', '!=', medicamentos[0].id)
 
         res.render('verinfo', {
+            medicamentos,
+            farmacias,
+            genericos
+        })
+    },
+
+    verPorIdFarmacia: async (req, res) => {
+        let medicamentos = await query('farmacos')
+            .select('*')
+            .where('id', '=', req.params.id)
+
+        let farmacias = await query('farmaco_farmacia')
+            .select('*')
+            .where('id_farmaco', '=', req.params.id)
+            .innerJoin('farmacias', 'farmacias.id', '=', 'farmaco_farmacia.id_farmacia')
+
+        let genericos = await query('farmacos')
+            .select('*')
+            .where('farmaco', '=', medicamentos[0].farmaco)
+            .andWhere('id', '!=', medicamentos[0].id)
+
+        res.render('verinfo_farmacia', {
             medicamentos,
             farmacias,
             genericos
@@ -97,5 +129,29 @@ module.exports = {
             .where('farmaco', 'LIKE', `%${req.params.busqueda}%`)
 
         res.json({ ok: true, medicamentos });
+    },
+
+    editar: async (req, res) => {
+        let medicamentos = await query('farmacos')
+            .select('*')
+            .where('id', '=', req.params.id)
+
+        let medicamento = medicamentos[0]
+
+        res.render('editar_medicamento', {
+            medicamento
+        })
+    },
+
+    editarMedicamento: async (req, res) => {
+        let resultado = await query('farmacos')
+            .update(req.body)
+            .where('id', '=', req.params.id)
+
+        res.json({ ok: true, msg: 'Información editada' })
+    },
+
+    eliminarMedicamento: async (req, res) => {
+        await query('farmacos').where('id', '=', req.params.id).del()
     }
 }

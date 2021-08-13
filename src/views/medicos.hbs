@@ -11,16 +11,33 @@
                 <form method="POST" id="form-reg">
                     <div class="row p-5">
                         <div class="col-md-6">
-                            <label for="cedula" class="form-label text-uppercase">Cedula</label>
-                            <input type="text" class="form-control" id="cedula" placeholder="Cedula de identidad" required>
+                            <label for="cedula" class="form-label text-uppercase">Cedula <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="cedula" placeholder="Cedula de identidad"
+                                required>
                         </div>
                         <div class="col-md-6">
-                            <label for="nombre" class="form-label text-uppercase">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" placeholder="Nombre y apellido" required>
+                            <label for="nombre" class="form-label text-uppercase">Nombre <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Nombre y apellido"
+                                required>
                         </div>
                         <div class="col-md-6 mt-4">
-                            <label for="especialidad" class="form-label text-uppercase">Especialidad</label>
-                            <input type="text" class="form-control" id="especialidad" placeholder="Especialidad" required>
+                            <label for="especialidad" class="form-label text-uppercase">Especialidad <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="especialidad" placeholder="Especialidad"
+                                required>
+                        </div>
+
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label text-uppercase">Correo <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="correo" placeholder="Correo electrónico"
+                                required>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label text-uppercase">Clave <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" id="clave" placeholder="Clave de acceso"
+                                required>
                         </div>
                     </div>
 
@@ -28,57 +45,91 @@
                         <button class="btn btn-success mt-4" id="btnsubmit" type="submit">Registrar</button>
                     </div>
                 </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    let formReg = document.getElementById('form-reg');
+    <script>
+        let formReg = document.getElementById('form-reg');
 
-    formReg.addEventListener('submit', e => {
-        e.preventDefault();
+        formReg.addEventListener('submit', e => {
+            e.preventDefault();
 
-        let body = {
-            cedula: document.getElementById('cedula').value,
-            nombre: document.getElementById('nombre').value,
-            especialidad: document.getElementById('especialidad').value,
-        }
+            let body = {
+                cedula: document.getElementById('cedula').value,
+                nombre: document.getElementById('nombre').value,
+                especialidad: document.getElementById('especialidad').value,
+            }
 
-        btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
+            btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
 
-        let res = post(body, '/medicos')
-            .then(res => {
-                btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+            let res = post(body, '/medicos')
+                .then(res => {
+                    btnEnable(document.getElementById('btnsubmit'), 'Registrar')
 
-                if (res.ok === false) {
-                    console.log(res)
-                    swal({
-                        title: "¡Error!",
-                        text: res.msg,
-                        icon: "error"
-                    });
-                    return;
-                }
+                    if (res.ok === false) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: res.msg,
+                            icon: "error"
+                        });
+                        return;
+                    }
 
-                if (!res.ok) {
-                    console.log(res)
-                    swal({
-                        title: "¡Error!",
-                        text: "¡No se pudo conectar con el servidor!",
-                        icon: "error"
-                    });
-                    return;
-                }
+                    if (!res.ok) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: "¡No se pudo conectar con el servidor!",
+                            icon: "error"
+                        });
+                        return;
+                    }
 
-                swal({
-                    title: "¡Hecho!",
-                    text: res.msg,
-                    icon: "success"
+                    let body2 = {
+                        correo: document.getElementById('correo').value,
+                        clave: document.getElementById('clave').value,
+                        id_medico: res.id_med
+                    }
+
+                    let res2 = post(body2, '/registro')
+                        .then(res2 => {
+                            btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+
+                            if (res2.ok === false) {
+                                console.log(res2)
+                                swal({
+                                    title: "¡Error!",
+                                    text: res.msg,
+                                    icon: "error"
+                                });
+                                return;
+                            }
+
+                            if (!res2.ok) {
+                                console.log(res2)
+                                swal({
+                                    title: "¡Error!",
+                                    text: "¡No se pudo conectar con el servidor!",
+                                    icon: "error"
+                                });
+                                return;
+                            }
+
+                            swal({
+                                title: "¡Hecho!",
+                                text: res.msg,
+                                icon: "success"
+                            })
+                                .then(() => window.location.href = url + '/medicos/registro');
+                        })
+                        .catch(err => {
+                            console.error(err)
+                        })
                 })
-                    .then(() => window.location.href = url + '/medicos/registro');
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    });
-</script>
+                .catch(err => {
+                    console.error(err)
+                })
+        });
+    </script>

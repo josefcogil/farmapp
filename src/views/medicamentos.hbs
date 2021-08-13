@@ -11,99 +11,105 @@
                 <form method="POST" id="form-reg">
                     <div class="row p-5">
                         <div class="col-md-6">
-                            <label for="cedula" class="form-label text-uppercase">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" placeholder="Nombre del medicamento" required>
+                            <label for="cedula" class="form-label text-uppercase">Nombre <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Nombre del medicamento"
+                                required>
                         </div>
                         <div class="col-md-6">
-                            <label for="nombre" class="form-label text-uppercase">Medicamento</label>
+                            <label for="nombre" class="form-label text-uppercase">Medicamento <span
+                                    class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="medicamento" placeholder="Descripcion" required>
                         </div>
                         <div class="col-md-6 mt-4">
-                            <label for="direccion" class="form-label text-uppercase">Presentacion</label>
-                            <input type="text" class="form-control" id="presentacion" placeholder="Presentacion" required>
+                            <label for="direccion" class="form-label text-uppercase">Presentacion <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="presentacion" placeholder="Presentacion"
+                                required>
                         </div>
                         <div class="col-md-6 mt-4">
-                            <label for="telefono" class="form-label text-uppercase">Mg</label>
+                            <label for="telefono" class="form-label text-uppercase">Mg <span
+                                    class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="mg" placeholder="Cantidad en mg" required>
                         </div>
                         <div class="col-md-6 mt-4">
-                        <label class="form-label text-uppercase">Farmacia</label>
-                        <select name="" id="farmacia" class="form-control">
-                            <option value="">Seleccione una farmacia...</option>
-                            {{#each farmacias}}
-                            <option value="{{this.id}}">{{this.nombre}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
+                            <label class="form-label text-uppercase">Farmacia <span class="text-danger">*</span></label>
+                            <select name="" id="farmacia" class="form-control">
+                                <option value="">Seleccione una farmacia...</option>
+                                {{#each farmacias}}
+                                <option value="{{this.id}}">{{this.nombre}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
                     </div>
 
                     <div class="text-center">
                         <button class="btn btn-success mt-4" id="btnsubmit" type="submit">Registrar</button>
                     </div>
                 </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    let formReg = document.getElementById('form-reg');
+    <script>
+        let formReg = document.getElementById('form-reg');
 
-    formReg.addEventListener('submit', e => {
-        e.preventDefault();
+        formReg.addEventListener('submit', e => {
+            e.preventDefault();
 
-        if (document.getElementById('farmacia').value == "") {
-            swal({
-                title: "¡Aviso!",
-                text: "Seleccione una farmacia",
-                icon: "warning"
-            })
-
-            return;
-        }
-
-        let body = {
-            nombre: document.getElementById('nombre').value,
-            medicamento: document.getElementById('medicamento').value,
-            presentacion: document.getElementById('presentacion').value,
-            mg: document.getElementById('mg').value,
-            farmacia: document.getElementById('farmacia').value
-        }
-
-        btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
-
-        let res = post(body, '/medicamentos')
-            .then(res => {
-                btnEnable(document.getElementById('btnsubmit'), 'Registrar')
-
-                if (res.ok === false) {
-                    console.log(res)
-                    swal({
-                        title: "¡Error!",
-                        text: res.msg,
-                        icon: "error"
-                    });
-                    return;
-                }
-
-                if (!res.ok) {
-                    console.log(res)
-                    swal({
-                        title: "¡Error!",
-                        text: "¡No se pudo conectar con el servidor!",
-                        icon: "error"
-                    });
-                    return;
-                }
-
+            if (document.getElementById('farmacia').value == "") {
                 swal({
-                    title: "¡Hecho!",
-                    text: res.msg,
-                    icon: "success"
+                    title: "¡Aviso!",
+                    text: "Seleccione una farmacia",
+                    icon: "warning"
                 })
-                    .then(() => window.location.href = url + '/medicamentos/registro');
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    });
-</script>
+
+                return;
+            }
+
+            let body = {
+                nombre: document.getElementById('nombre').value,
+                medicamento: document.getElementById('medicamento').value,
+                presentacion: document.getElementById('presentacion').value,
+                mg: document.getElementById('mg').value,
+                farmacia: document.getElementById('farmacia').value
+            }
+
+            btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
+
+            let res = post(body, '/medicamentos')
+                .then(res => {
+                    btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+
+                    if (res.ok === false) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: res.msg,
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    if (!res.ok) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: "¡No se pudo conectar con el servidor!",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    swal({
+                        title: "¡Hecho!",
+                        text: res.msg,
+                        icon: "success"
+                    })
+                        .then(() => window.location.href = url + '/medicamentos/registro');
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        });
+    </script>

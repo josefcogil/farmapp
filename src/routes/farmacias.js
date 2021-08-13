@@ -11,4 +11,10 @@ router.post('/', controller.registrarFarmacia);
 
 router.get('/:id', controller.consultarPorMedicamento);
 
+router.get('/editar/:id', controller.editar);
+
+router.put('/:id', controller.editarFarmacia);
+
+router.delete('/:id', controller.eliminarFarmacia)
+
 module.exports = router;

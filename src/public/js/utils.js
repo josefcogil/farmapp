@@ -20,6 +20,27 @@ const post = async (body, endpoint) => {
     return res;
 }
 
+// Send PUT request
+const put = async (body, endpoint) => {
+
+    let res = await fetch(`${url}${endpoint}`, {
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+        .then(res => res.json())
+        .then(res => {
+            return res
+        })
+        .catch(err => {
+            return { err: true, err }
+        })
+
+    return res;
+}
+
 // Disable button
 const btnDisable = (btn, text) => {
     btn.setAttribute('disabled', true);

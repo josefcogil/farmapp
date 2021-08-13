@@ -11,11 +11,14 @@
                 <form method="POST" id="form-reg">
                     <div class="row p-5">
                         <div class="col-md-6">
-                            <label for="cedula" class="form-label text-uppercase">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" placeholder="Nombre de la farmacia" required>
+                            <label for="cedula" class="form-label text-uppercase">Nombre <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Nombre de la farmacia"
+                                required>
                         </div>
                         <div class="col-md-6">
-                            <label for="nombre" class="form-label text-uppercase">Dirección</label>
+                            <label for="nombre" class="form-label text-uppercase">Dirección <span
+                                    class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="direccion" placeholder="Dirección" required>
                         </div>
                     </div>
@@ -24,56 +27,56 @@
                         <button class="btn btn-success mt-4" id="btnsubmit" type="submit">Registrar</button>
                     </div>
                 </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    let formReg = document.getElementById('form-reg');
+    <script>
+        let formReg = document.getElementById('form-reg');
 
-    formReg.addEventListener('submit', e => {
-        e.preventDefault();
+        formReg.addEventListener('submit', e => {
+            e.preventDefault();
 
-        let body = {
-            nombre: document.getElementById('nombre').value,
-            direccion: document.getElementById('direccion').value
-        }
+            let body = {
+                nombre: document.getElementById('nombre').value,
+                direccion: document.getElementById('direccion').value
+            }
 
-        btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
+            btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
 
-        let res = post(body, '/farmacias')
-            .then(res => {
-                btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+            let res = post(body, '/farmacias')
+                .then(res => {
+                    btnEnable(document.getElementById('btnsubmit'), 'Registrar')
 
-                if (res.ok === false) {
-                    console.log(res)
+                    if (res.ok === false) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: res.msg,
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    if (!res.ok) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: "¡No se pudo conectar con el servidor!",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
                     swal({
-                        title: "¡Error!",
+                        title: "¡Hecho!",
                         text: res.msg,
-                        icon: "error"
-                    });
-                    return;
-                }
-
-                if (!res.ok) {
-                    console.log(res)
-                    swal({
-                        title: "¡Error!",
-                        text: "¡No se pudo conectar con el servidor!",
-                        icon: "error"
-                    });
-                    return;
-                }
-
-                swal({
-                    title: "¡Hecho!",
-                    text: res.msg,
-                    icon: "success"
+                        icon: "success"
+                    })
+                        .then(() => window.location.href = url + '/farmacias/registro');
                 })
-                    .then(() => window.location.href = url + '/farmacias/registro');
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    });
-</script>
+                .catch(err => {
+                    console.error(err)
+                })
+        });
+    </script>

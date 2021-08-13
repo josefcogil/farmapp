@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 10vh;">
   <div class="container">
     <a class="navbar-brand" href="#">FarmaApp</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -11,23 +12,25 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="registro" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" id="registro" href="" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             Registro
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/medicos/registro">Médicos</a></li>
+            <li><a id="reg_med" class="dropdown-item" href="/medicos/registro">Médicos</a></li>
             <li><a class="dropdown-item" href="/pacientes/registro">Pacientes</a></li>
-            <li><a class="dropdown-item" href="/farmacias/registro">Farmacias</a></li>
+            <li><a id="farm_reg" class="dropdown-item" href="/farmacias/registro">Farmacias</a></li>
             <li><a class="dropdown-item" href="/medicamentos/registro">Medicamentos</a></li>
           </ul>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="consulta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" id="consulta" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             Consulta
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/medicos">Médicos</a></li>
+            <li><a id="cons_med" class="dropdown-item" href="/medicos">Médicos</a></li>
             <li><a class="dropdown-item" href="/pacientes">Pacientes</a></li>
             <li><a class="dropdown-item" href="/farmacias">Farmacias</a></li>
             <li><a class="dropdown-item" href="/medicamentos">Medicamentos</a></li>
@@ -40,7 +43,8 @@
         </li>
 
         {{!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/medicos" id="medicos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/medicos" id="medicos" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             Medicos
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -49,7 +53,8 @@
           </ul>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/pacientes" id="pacientes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/pacientes" id="pacientes" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             Pacientes
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -58,7 +63,8 @@
           </ul>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/farmacias" id="farmacias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/farmacias" id="farmacias" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             Farmacias
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -67,7 +73,8 @@
           </ul>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/medicamentos" id="medicamentos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/medicamentos" id="medicamentos" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
             Medicamentos
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -76,7 +83,8 @@
           </ul>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/recipes" id="recipes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/recipes" id="recipes" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
             Recipes
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -91,14 +99,21 @@
         </li>
       </ul>
     </div>
-    <a href="/"><button class="btn btn-danger" >Salir</button></a>
+    <a href="/"><button class="btn btn-danger">Salir</button></a>
   </div>
 </nav>
 
 <script>
+  let rol = localStorage.getItem('rol')
+
+  if (rol == 2) {
+    document.getElementById('reg_med').classList += ' disabled'
+    document.getElementById('farm_reg').classList += ' disabled'
+  }
+
   let view = window.location.pathname;
 
-  switch(view) {
+  switch (view) {
     case '/home': document.getElementById('home').classList.add('active'); break;
     case '/medicos': document.getElementById('consulta').classList.add('active'); break;
     case '/medicos/registro': document.getElementById('registro').classList.add('active'); break;

@@ -10,15 +10,24 @@
                 <th scope="col">Medicamento</th>
                 <th scope="col">Presentacion</th>
                 <th scope="col">mg</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             {{#each medicamentos}}
-            <tr onclick="verInfo({{this.id}})">
+            <tr>
                 <th class="text-uppercase">{{this.nombre}}</th>
                 <td class="text-uppercase">{{this.farmaco}}</td>
                 <td class="text-uppercase">{{this.presentacion}}</td>
                 <td>{{this.mg}}</td>
+                <td class="text-success" onclick="verInfo({{this.id}})"><button class="btn btn-primary btn-sm">Ver
+                        más</button></td>
+                <td class="text-success"><a href="http://localhost:4000/medicamentos/editar/{{this.id}}"><button
+                            class="btn btn-outline-primary btn-sm">Editar</button></a></td>
+                <td class="text-success" onclick="eliminar({{this.id}})"><button
+                        class="btn btn-danger btn-sm">x</button></td>
             </tr>
             {{/each}}
         </tbody>
@@ -27,4 +36,31 @@
 
 <script>
     const verInfo = id => window.location.href = url + '/medicamentos/ver/' + id
+
+    const eliminar = id => {
+        swal({
+            title: "!Aviso!",
+            text: "¿Desea eliminar este medicamento?",
+            icon: "warning",
+            dangerMode: true,
+            buttons: true
+        }).then(res => {
+            if (res == true) {
+                let resultado = fetch(`http://localhost:4000/medicamentos/${id}`, {
+                    method: 'DELETE'
+                })
+
+                swal({
+                    title: "¡Hecho!",
+                    text: "Medicamento eliminado exitosamente",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = url + '/medicamentos'
+                })
+            } else {
+                return
+            }
+        })
+
+    }
 </script>

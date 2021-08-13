@@ -23,6 +23,9 @@
                 <td class="text-uppercase">{{this.medico}}</td>
                 <td class="text-success" onclick="verInfo({{this.id}})"><button class="btn btn-primary btn-sm">Ver
                         más</button></td>
+                {{!-- <td class="text-success"><a href="http://localhost:4000/recipes/editar/{{this.id}}"><button
+                            class="btn btn-outline-primary btn-sm">Editar</button></a></td> --}}
+
                 <td class="text-success" onclick="eliminar({{this.id}})"><button
                         class="btn btn-danger btn-sm">x</button></td>
             </tr>
@@ -59,5 +62,5 @@
             }
         })
 
-    };
+    }
 </script>

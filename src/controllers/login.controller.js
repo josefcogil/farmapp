@@ -13,12 +13,14 @@ module.exports = {
         }
 
         let clave = verificar[0].clave;
-        
-        if(clave != req.body.clave){
+
+        if (clave != req.body.clave) {
             res.json({ ok: false, msg: 'Clave incorrecta' })
             return;
         }
 
-        res.json({ok: true})
+        console.log(verificar)
+
+        res.json({ ok: true, rol: verificar[0].rol, id_medico: verificar[0].medico })
     }
 }
