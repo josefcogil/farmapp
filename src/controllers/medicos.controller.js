@@ -15,11 +15,10 @@ module.exports = {
         let resultado = await query('medicos')
             .insert({
                 cedula: req.body.cedula,
+                codigo: req.body.codigo,
                 nombre: req.body.nombre,
                 especialidad: req.body.especialidad
             })
-
-        console.log(resultado)
 
         let id_med = resultado[0]
 

@@ -17,6 +17,12 @@
                                 required>
                         </div>
                         <div class="col-md-6">
+                            <label for="cedula" class="form-label text-uppercase">Codigo <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="codigo" placeholder="Código del médico"
+                                required>
+                        </div>
+                        <div class="col-md-6 mt-4">
                             <label for="nombre" class="form-label text-uppercase">Nombre <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="nombre" placeholder="Nombre y apellido"
@@ -57,6 +63,7 @@
 
             let body = {
                 cedula: document.getElementById('cedula').value,
+                codigo: document.getElementById('codigo').value,
                 nombre: document.getElementById('nombre').value,
                 especialidad: document.getElementById('especialidad').value,
             }

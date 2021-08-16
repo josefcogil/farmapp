@@ -7,6 +7,7 @@
         <thead>
             <tr>
                 <th scope="col">Cédula</th>
+                <th scope="col">Código</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Especialidad</th>
                 <th></th>
@@ -17,12 +18,12 @@
             {{#each medicos}}
             <tr>
                 <th class="text-uppercase">{{this.cedula}}</th>
+                <td class="text-uppercase">{{this.codigo}}</td>
                 <td class="text-uppercase">{{this.nombre}}</td>
                 <td class="text-uppercase">{{this.especialidad}}</td>
                 <td class="text-success"><a href="http://localhost:4000/medicos/editar/{{this.id}}"><button
                             class="btn btn-outline-primary btn-sm" id="btn_editar">Editar</button></a></td>
-                <td class="text-success" onclick="eliminar({{this.id}})"><button
-                        class="btn btn-danger btn-sm">x</button></td>
+                <td onclick="eliminar({{this.id}})"><button class="btn btn-danger btn-sm">x</button></td>
             </tr>
             {{/each}}
         </tbody>
@@ -30,7 +31,6 @@
 </div>
 
 <script>
-    let rol = localStorage.getItem('rol')
 
     if (rol == 2) {
         document.getElementById('btn_editar').classList += ' disabled'

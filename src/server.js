@@ -36,7 +36,8 @@ const routes = [
     'login',
     'medicos',
     'pacientes',
-    'recipes'
+    'recipes',
+    'patologias'
 ]
 
 // Require routes

@@ -18,9 +18,10 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a id="reg_med" class="dropdown-item" href="/medicos/registro">Médicos</a></li>
+            <li><a id="reg_far" class="dropdown-item" href="/medicos/registro">Farmaceutas</a></li>
             <li><a class="dropdown-item" href="/pacientes/registro">Pacientes</a></li>
             <li><a id="farm_reg" class="dropdown-item" href="/farmacias/registro">Farmacias</a></li>
-            <li><a class="dropdown-item" href="/medicamentos/registro">Medicamentos</a></li>
+            <li><a id="medic_reg" class="dropdown-item" href="/medicamentos/registro">Medicamentos</a></li>
           </ul>
         </li>
 
@@ -109,6 +110,8 @@
   if (rol == 2) {
     document.getElementById('reg_med').classList += ' disabled'
     document.getElementById('farm_reg').classList += ' disabled'
+    document.getElementById('medic_reg').classList += ' disabled'
+    document.getElementById('farm_reg').classList += ' disabled'
   }
 
   let view = window.location.pathname;
@@ -125,5 +128,6 @@
     case '/medicamentos/registro': document.getElementById('registro').classList.add('active'); break;
     case '/recipes': document.getElementById('consulta').classList.add('active'); break;
     case '/recipes/registro': document.getElementById('recipe').classList.add('active'); break;
+    case '/farmaceutas/registro': document.getElementById('farmaceuta').classList.add('active'); break;
   }
 </script>

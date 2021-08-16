@@ -26,18 +26,20 @@
                     </div>
                     <div class="col-md-6 mt-4">
                         <label class="form-label text-uppercase">Patologia</label>
-                        <select name="" class="form-control text-uppercase" onchange="render(this.value, 'container1')">
+                        <select id="pat" name="" class="form-control text-uppercase"
+                            onchange="render(this.value, 'container1')">
                             <option value="">Seleccione una patologia...</option>
                             {{#each patologias}}
                             <option value="{{this.id}}">{{this.patologia}}</option>
                             {{/each}}
+                            <option value="otros">Otros...</option>
                         </select>
                     </div>
-                    <div class="col-md-6 mt-4">
+                    {{!-- <div class="col-md-6 mt-4">
                         <label class="form-label text-uppercase">Buscar por patologia</label>
                         <input oninput="nameSearchRender(this.value, 'container1')" type="text" name=""
                             class="form-control">
-                    </div>
+                    </div> --}}
 
                     <div class="text-center mt-5">
                         <div class="row">
@@ -56,7 +58,8 @@
                             <div class="col-md-4"></div>
                         </div>
                         <div class="text-center mb-5">
-                            <a href="http://localhost:4000/medicamentos/registro">Registrar medicamento</a>
+                            <a href="http://localhost:4000/medicamentos/registro"
+                                class="btn btn-outline-success mb-5">Nuevo medicamento</a>
                         </div>
                         <button class="btn btn-success mb-5" id="btnsubmit" type="submit">Guardar recipe</button>
 
@@ -137,6 +140,10 @@
     }
 
     const render = async (id, idContainer) => {
+        if (document.getElementById('pat').value == 'otros') {
+            return window.location.href = url + '/patologias/registro'
+        }
+
         let medicamentos = await consultarPorIDPatologia(id);
 
         let container = document.getElementById(idContainer);

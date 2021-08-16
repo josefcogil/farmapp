@@ -1,0 +1,106 @@
+{{> navbar}}
+
+<div class="mt-5">
+    <div class="container">
+        <div class="card">
+            <h3 class="card-header text-center text-uppercase" style="letter-spacing: 1rem;">
+                Registrar patologia
+            </h3>
+            <div class="card-body">
+
+                <form method="POST" id="form-reg">
+                    <div class="row p-5">
+                        <div class="col-md-6">
+                            <label for="cedula" class="form-label text-uppercase">Nombre <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Nombre de la patología"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label text-uppercase">Descripcion <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="descripcion" placeholder="Descripción" required>
+                        </div>
+                    </div>
+
+                    <div class="row p-5">
+                        <h5 class="text-center text-uppercase mb-5 text-secondary">
+                            Medicamentos relacionados
+                        </h5>
+
+                        {{#each farmacos}}
+                        <div class="col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{this.id}}">
+                                <label class="form-check-label text-uppercase">
+                                    {{this.farmaco}}
+                                </label>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-success mt-4" id="btnsubmit" type="submit">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let valoresCheck = [];
+
+        let formReg = document.getElementById('form-reg');
+
+        formReg.addEventListener('submit', e => {
+            e.preventDefault();
+
+            $("input[type=checkbox]:checked").each(function () {
+                valoresCheck.push(parseInt(this.value));
+            });
+
+            let body = {
+                patologia: document.getElementById('nombre').value,
+                descripcion: document.getElementById('descripcion').value,
+                medicamentos: valoresCheck
+            }
+
+            btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
+
+            let res = post(body, '/patologias')
+                .then(res => {
+                    btnEnable(document.getElementById('btnsubmit'), 'Registrar')
+
+                    if (res.ok === false) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: res.msg,
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    if (!res.ok) {
+                        console.log(res)
+                        swal({
+                            title: "¡Error!",
+                            text: "¡No se pudo conectar con el servidor!",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    swal({
+                        title: "¡Hecho!",
+                        text: res.msg,
+                        icon: "success"
+                    })
+                        .then(() => window.location.href = url + '/recipes/registro');
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        });
+    </script>

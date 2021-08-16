@@ -45,6 +45,16 @@
     </div>
 
     <script>
+        if (rol == 2) {
+            swal({
+                title: "!Aviso!",
+                text: "Se necesitan privilegios de administrador",
+                icon: "warning",
+                dangerMode: true,
+                buttons: true
+            }).then(() => window.history.go(-1))
+        }
+
         let formReg = document.getElementById('form-reg');
 
         formReg.addEventListener('submit', e => {
