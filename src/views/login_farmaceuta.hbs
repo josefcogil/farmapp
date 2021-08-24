@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="text-center">
-                    <a class="text-secondary" href="/farmaceutas/login">Farmaceutas</a>
+                    <a class="text-secondary" href="/farmaceutas/registro">Registro</a>
                 </div>
             </form>
         </div>
@@ -100,7 +100,7 @@
 
             btnDisable(document.getElementById('btnsubmit'), 'Cargando...');
 
-            let res = post(body, '/login')
+            let res = post(body, '/farmaceutas/login')
                 .then(res => {
                     btnEnable(document.getElementById('btnsubmit'), 'Ingresar')
 
@@ -128,7 +128,7 @@
                     localStorage.setItem('rol', res.rol)
                     localStorage.setItem('medico', res.id_medico)
 
-                    window.location.href = url + '/home';
+                    window.location.href = url + '/recipes/consulta/farmacias';
                 })
                 .catch(err => {
                     console.error(err)
